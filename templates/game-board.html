@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Boggle!</h1>
+    <hr>
+    <table>
+    <tbody>
+    {% for row in board %}
+        <tr>
+            {% for let in row%}
+            <td>{{let}}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}    
+    </tbody>
+    </table>
+    <form action="">
+        <label for="guess">Enter a guess</label>
+        <input type="text" name="guess" class="guess" placeholder="Boggle!">
+        <button type="submit" class="subBtn">Go!</button>
+    </form>
+    <div class="game-response"></div>
+
+    <script src="https://unpkg.com/jquery"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
