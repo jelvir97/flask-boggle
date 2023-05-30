@@ -7,9 +7,10 @@ const $gameResponse = $('.game-response')
 const $body= $('body')
 const $timer = $('.timer')
 const $form = $('form')
+const $highScore = $('.high-score')
 
 let score = 0
-let time = 10
+let time = 60
 
 async function submitGuess(e){
     e.preventDefault()
@@ -35,6 +36,11 @@ function updateScore(isWord, guess, new_score){
     return new_score
 }
 
+function updateHighScore(newHighScore, gamesPlayed){
+    $highScore.empty()
+    $highScore.text(`High Score: ${newHighScore} - - - Games Played: ${gamesPlayed}`)
+}
+
 const timeId = setInterval(() => {
     if(time ===0){
         clearInterval(timeId)
@@ -55,8 +61,14 @@ async function gameOver(){
     $timer.empty()
     $timer.append(`<h3>Game Over!</h3>`)
     const response = await axios({
-        url: 'submit',
+        url: 'game-over',
         method: "POST",
-        data: {guess : $guessInput.val()}
+        data: {score}
       });
+    
+    console.log(response)
+    const gamesPlayed = response.data.gamesPlayed
+    const newHighScore = response.data.highScore
+    updateHighScore(newHighScore,gamesPlayed)
+    
 }
