@@ -1,11 +1,15 @@
-$submitBtn = $('.subBtn')
-$guessInput = $('.guess')
+const $submitBtn = $('.subBtn')
+const $guessInput = $('.guess')
 
 $submitBtn.on('click', submitGuess)
-$gameResponse = $('.game-response')
-$body= $('body')
 
-score = 0
+const $gameResponse = $('.game-response')
+const $body= $('body')
+const $timer = $('.timer')
+const $form = $('form')
+
+let score = 0
+let time = 10
 
 async function submitGuess(e){
     e.preventDefault()
@@ -29,4 +33,30 @@ function updateScore(isWord, guess, new_score){
         new_score += guess.length
     }
     return new_score
+}
+
+const timeId = setInterval(() => {
+    if(time ===0){
+        clearInterval(timeId)
+        gameOver()
+        return
+    }
+    time -= 1;
+    updateTimer()
+},1000)
+
+function updateTimer(){
+    $timer.empty()
+    $timer.append(`<h3>${time}s - - - </h3>`)
+}
+
+async function gameOver(){
+    $form.hide()
+    $timer.empty()
+    $timer.append(`<h3>Game Over!</h3>`)
+    const response = await axios({
+        url: 'submit',
+        method: "POST",
+        data: {guess : $guessInput.val()}
+      });
 }
